@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<style>
+h1{
+   font-size: 7vw;
+   position: absolute;
+   top: 40%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+</style>
+<html>
+<body onload="getLocation()" id='demo'>
+<script>
+    
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+    let result
+    mi_url = `https://services3.arcgis.com/Jdnp1TjADvSDxMAX/ArcGIS/rest/services/open_PresettlementVegetation/FeatureServer/0/query?where=&objectIds=&time=&geometry=${position.coords.longitude}%2C${position.coords.latitude}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=COVERTYPE&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson`
+    fetch(mi_url).then(response => response.json()).then(function(json) {
+    x.innerHTML = `<h1>${json.features[0].attributes.COVERTYPE}</h1>`});
+}
+</script>
+
+</body>
+</html>
