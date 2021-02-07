@@ -30,7 +30,6 @@ function showPosition(position) {
         const nearby_vegetation = json.features
         x.innerHTML = `<h1>${local_vegetation.attributes.COVERTYPE}</h1>`
         for (const feature of nearby_vegetation) {
-            console.log(feature.attributes.COVERTYPE)
             let min_distance = Infinity
             let closest_point = [0.0, 0.0]
             for (const point of feature.geometry.rings[0]) {
