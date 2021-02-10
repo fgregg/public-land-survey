@@ -61,7 +61,11 @@ class Text {
           } else {
             humanDistance = `${Text.humanFractions(distance)} of a mile`;
           }
-          sentence = sentencePatterns.sample()(cover.direction, humanDistance, cover.coverType.toLowerCase());
+          sentence = sentencePatterns.sample()(
+            cover.direction,
+            humanDistance,
+            cover.coverType.toLowerCase()
+          );
         }
       } else if (idx < (covers.length - 1)) {
         if (distance > 0.9375) {

@@ -18,18 +18,21 @@ class LandCoverServer {
       f: 'pjson',
       returnGeometry: false,
       returnQueryGeometry: true,
-      outFields: [this.coverFieldName, 'OBJECTID'],
+      outFields: [this.coverFieldName, 'OBJECTID']
     });
     const url = this.baseURL + params.toString();
     const response = await fetch(url);
     const json = await response.json();
 
     // cache the projected lat long
-    this.projectedPoints.set(position.toString(), new Point(json.queryGeometry.x, json.queryGeometry.y));
+    this.projectedPoints.set(
+      position.toString(),
+      new Point(json.queryGeometry.x, json.queryGeometry.y)
+    );
 
     return {
       coverType: json.features[0].attributes[this.coverFieldName],
-      OBJECTID: json.features[0].attributes.OBJECTID,
+      OBJECTID: json.features[0].attributes.OBJECTID
     };
   }
 
@@ -43,7 +46,7 @@ class LandCoverServer {
       distance: buffer,
       units: 'esriSRUnit_StatuteMile',
       where: `OBJECTID <> ${excludeObject}`,
-      outFields: [this.coverFieldName],
+      outFields: [this.coverFieldName]
     });
     const url = this.baseURL + params.toString();
     const response = await fetch(url);

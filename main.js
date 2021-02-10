@@ -9,7 +9,11 @@ async function historicLandCover(browserPosition) {
   const localVegetation = await landCoverServer.cover(position);
   text.currentCover(localVegetation);
 
-  const nearbyVegetation = landCoverServer.coversWithinBuffer(position, 1.0, localVegetation.OBJECTID);
+  const nearbyVegetation = landCoverServer.coversWithinBuffer(
+    position,
+    1.0,
+    localVegetation.OBJECTID
+  );
   text.nearbyCovers(nearbyVegetation);
 }
 
