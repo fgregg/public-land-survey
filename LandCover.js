@@ -55,6 +55,9 @@ class LandCoverServer {
 
     for (const feature of json.features) {
       const cover = new Cover(feature.geometry.rings[0], feature.attributes[this.coverFieldName]);
+
+      // change the origin point for the polygons to where the user is right
+      // now. this simplifies a lot of calculations of distance and direction
       cover.center(currentPoint);
       yield cover;
     }

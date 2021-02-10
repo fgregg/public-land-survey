@@ -17,7 +17,10 @@ class Text {
     }
 
     this.body.innerHTML += '<p>';
-    for (const direction of this.compassQuadrants) {
+
+    // we repeat "east" at the beginning and end of compassQuadrants,
+    // so we want to avoid the last "east"
+    for (const direction of this.compassQuadrants.slice(0, -1)) {
       const covers = coversByDirection.get(direction);
       if (covers.length === 0) {
         // eslint-disable-next-line no-continue
