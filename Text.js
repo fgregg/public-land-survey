@@ -2,23 +2,22 @@
 class Text {
   constructor(body) {
     this.body = body;
+    this.compassQuadrants = ['east', 'northeast', 'north', 'northwest', 'west', 'southwest', 'south', 'southeast', 'east'];
   }
-
-  static compassQuadrants = ['east', 'northeast', 'north', 'northwest', 'west', 'southwest', 'south', 'southeast', 'east'];
 
   currentCover(cover) {
     this.body.innerHTML = `<p id='location'>You are in a <strong>${cover.coverType.toLowerCase()}</strong>.</p>`;
   }
 
   async nearbyCovers(nearCovers) {
-    const coversByDirection = new Map(Text.compassQuadrants.map((direction) => [direction, []]));
+    const coversByDirection = new Map(this.compassQuadrants.map((direction) => [direction, []]));
     for await (const cover of nearCovers) {
-      const direction = Text.cardinalDirection(cover.closestPoint);
+      const direction = this.cardinalDirection(cover.closestPoint);
       coversByDirection.get(direction).push(cover);
     }
 
     this.body.innerHTML += '<p>';
-    for (const direction of Text.compassQuadrants) {
+    for (const direction of this.compassQuadrants) {
       const covers = coversByDirection.get(direction);
       if (covers.length === 0) {
         // eslint-disable-next-line no-continue
@@ -31,13 +30,13 @@ class Text {
       }
 
       covers.sort((a, b) => a.distance - b.distance);
-      const sentence = this.coverSentence(covers);
+      const sentence = Text.coverSentence(covers);
       this.body.innerHTML += `${sentence}. `;
     }
     this.body.innerHTML += '</p>';
   }
 
-  coverSentence(covers) {
+  static coverSentence(covers) {
     const sentencePatterns = [(direction, distance, cover) => `To the ${direction}, there is a ${cover} in about ${distance}`,
                               (direction, distance, cover) => `There is a ${cover} about ${distance} ${direction} of here`,
                               (direction, distance, cover) => `To the ${direction}, in about ${distance}, there is a ${cover}`];
@@ -76,9 +75,9 @@ class Text {
     return sentence;
   }
 
-  static cardinalDirection(point) {
+  cardinalDirection(point) {
     const degrees = point.angleDegrees;
-    return Text.compassQuadrants[Math.round(degrees / 45)];
+    return this.compassQuadrants[Math.round(degrees / 45)];
   }
 
   static metersToMiles(meters) {
