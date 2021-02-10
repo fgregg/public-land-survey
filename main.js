@@ -126,7 +126,7 @@ class Text {
     }
 
     current_cover(cover) {
-        this.body.innerHTML = `<p>You are in a <strong>${cover.cover_type.toLowerCase()}</strong>.</p>`
+        this.body.innerHTML = `<p id='location'>You are in a <strong>${cover.cover_type.toLowerCase()}</strong>.</p>`
     }
 
     nearby_cover(cover) {
