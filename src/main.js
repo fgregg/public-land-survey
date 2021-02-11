@@ -3,7 +3,7 @@ import Text from './Text.js';
 
 const stateConfigs = new Map(
   [['Illinois', {
-    baseURL: 'https://imperialis.inhs.illinois.edu/arcgis/rest/services/Land_Cover/Presettlement_Land_Cover_All/MapServer/0/query?',
+    baseURL: 'https://thawing-ocean-28786.herokuapp.com/http://imperialis.inhs.illinois.edu/arcgis/rest/services/Land_Cover/Presettlement_Land_Cover_All/MapServer/0/query?',
     coverFieldName: 'MAP',
     spatialReference: 3857
   }],
