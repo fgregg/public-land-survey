@@ -12,3 +12,9 @@ As of now we have found and are using servers for
 * [Illinois](https://clearinghouse.isgs.illinois.edu/data/landcover/illinois-landcover-early-1800s)
 
 If you know of any similar data sources for other states, please open an issue!
+
+## To use the app
+Go to https://pls.bunkum.us
+
+## To develop the app
+Right now, the app is pure ES6, so if you have a modern browser you should be able to clone a local copy and open `index.html` directly in your browser.
