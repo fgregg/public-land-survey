@@ -16,7 +16,7 @@ If you know of any similar data sources for other states, please open an issue!
 ## To use the app
 Go to https://pls.bunkum.us
 
-Note the App will only do something interesting if you live in Michigan or Illinois right now.
+The app will only do something interesting if you live in Michigan or Illinois right now.
 
 ## To develop the app
 Right now, the app is pure ES6, so if you have a modern browser you should be able to clone a local copy and open `index.html` directly in your browser.
