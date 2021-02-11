@@ -5,8 +5,8 @@ class Text {
     this.compassQuadrants = ['east', 'northeast', 'north', 'northwest', 'west', 'southwest', 'south', 'southeast', 'east'];
   }
 
-  currentCover(cover) {
-    this.body.innerHTML = `<p id='location'>You are in a <strong>${cover.coverType.toLowerCase()}</strong>.</p>`;
+  currentCover(coverType) {
+    this.body.innerHTML = `<p id='location'>You are in a <strong>${coverType.toLowerCase()}</strong>.</p>`;
   }
 
   async nearbyCovers(nearCovers) {

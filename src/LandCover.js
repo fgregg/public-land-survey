@@ -3,10 +3,10 @@ import Cover from './Cover.js';
 import Point from './Point.js';
 
 class LandCoverServer {
-  constructor(coverFieldName) {
-    this.baseURL = 'https://services1.arcgis.com/7w1SUsLNZbGKoz6h/arcgis/rest/services/Michigan_vegetation_c1800/FeatureServer/0/query?';
+  constructor(baseURL, coverFieldName, spatialReference) {
+    this.baseURL = baseURL;
     this.coverFieldName = coverFieldName;
-    this.projectedPoints = new Map();
+    this.spatialReference = spatialReference;
   }
 
   async cover(position) {
@@ -17,26 +17,16 @@ class LandCoverServer {
       spatialRel: 'esriSpatialRelIntersects',
       f: 'pjson',
       returnGeometry: false,
-      returnQueryGeometry: true,
-      outFields: [this.coverFieldName, 'OBJECTID']
+      outFields: [this.coverFieldName]
     });
     const url = this.baseURL + params.toString();
     const response = await fetch(url);
     const json = await response.json();
 
-    // cache the projected lat long
-    this.projectedPoints.set(
-      position.toString(),
-      new Point(json.queryGeometry.x, json.queryGeometry.y)
-    );
-
-    return {
-      coverType: json.features[0].attributes[this.coverFieldName],
-      OBJECTID: json.features[0].attributes.OBJECTID
-    };
+    return json.features[0].attributes[this.coverFieldName];
   }
 
-  async* coversWithinBuffer(position, buffer = 0, excludeObject) {
+  async* coversWithinBuffer(position, buffer = 0, currentCover) {
     const params = new URLSearchParams({
       geometry: position,
       geometryType: 'esriGeometryPoint',
@@ -45,16 +35,14 @@ class LandCoverServer {
       f: 'pjson',
       distance: buffer,
       units: 'esriSRUnit_StatuteMile',
-      where: `OBJECTID <> ${excludeObject}`,
+      where: `${this.coverFieldName} <> '${currentCover}'`,
       outFields: [this.coverFieldName]
     });
     const url = this.baseURL + params.toString();
     const response = await fetch(url);
     const json = await response.json();
 
-    // could make his more robust and if we haven't seen lat longs before then
-    // query the server
-    const currentPoint = this.projectedPoints.get(position.toString());
+    const currentPoint = await this.project(position);
 
     for (const feature of json.features) {
       const cover = new Cover(feature.geometry.rings[0], feature.attributes[this.coverFieldName]);
@@ -64,6 +52,22 @@ class LandCoverServer {
       cover.center(currentPoint);
       yield cover;
     }
+  }
+
+  async project(position) {
+    const baseProjectionURL = 'https://gisapps.cityofchicago.org/arcgis/rest/services/Utilities/Geometry/GeometryServer/project?';
+    const params = new URLSearchParams({
+      inSR: 4326,
+      outSR: this.spatialReference,
+      geometries: position,
+      f: 'pjson'
+    });
+    const url = baseProjectionURL + params.toString();
+
+    const response = await fetch(url);
+    const json = await response.json();
+
+    return new Point(json.geometries[0].x, json.geometries[0].y);
   }
 }
 
