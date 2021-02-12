@@ -79,7 +79,7 @@ async function historicLandCover(browserPosition) {
     localVegetation
   );
   await text.nearbyCovers(nearbyVegetation);
-  text.nativeLand(await nativeLand(position));
+  //text.nativeLand(await nativeLand(position));
 }
 
 function getLocation() {
