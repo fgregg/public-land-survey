@@ -82,6 +82,12 @@ class Text {
     return sentence;
   }
 
+  nativeLand(territories) {
+    let territoryString = territories.slice(0, -1).join(', ');
+    territoryString += ` and ${territories[territories.length - 1]}`;
+    this.body.innerHTML += `<p id='nativeland'> You are in the land of the ${territoryString}.</p>`;
+  }
+
   cardinalDirection(point) {
     const degrees = point.angleDegrees;
     return this.compassQuadrants[Math.round(degrees / 45)];
