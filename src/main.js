@@ -40,25 +40,6 @@ async function whatState(position) {
   return state;
 }
 
-async function nativeLand(position) {
-  let longitude;
-  let latitude;
-  // eslint-disable-next-line prefer-const
-  [longitude, latitude] = position;
-
-  const baseURL = 'https://native-land.ca/api/index.php?';
-  const params = new URLSearchParams({
-    maps: 'territories',
-    position: [latitude, longitude]
-  });
-
-  const url = baseURL + params.toString();
-  const response = await fetch(url);
-  const json = await response.json();
-
-  return json.map((feature) => feature.properties.Name);
-}
-
 async function historicLandCover(browserPosition) {
   const position = [browserPosition.coords.longitude, browserPosition.coords.latitude];
   const state = await whatState(position);
@@ -78,8 +59,7 @@ async function historicLandCover(browserPosition) {
     1.0,
     localVegetation
   );
-  await text.nearbyCovers(nearbyVegetation);
-  text.nativeLand(await nativeLand(position));
+  text.nearbyCovers(nearbyVegetation);
 }
 
 function getLocation() {
