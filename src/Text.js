@@ -6,7 +6,7 @@ class Text {
   }
 
   currentCover(coverType) {
-    this.body.innerHTML = `<p id='location'>You are in a <strong>${coverType.toLowerCase()}</strong>.</p>`;
+    this.body.innerHTML = `<p id='location'>This was a <strong>${coverType.toLowerCase()}</strong>.</p>`;
   }
 
   async nearbyCovers(nearCovers) {
@@ -40,9 +40,9 @@ class Text {
   }
 
   static coverSentence(covers) {
-    const sentencePatterns = [(direction, distance, cover) => `To the ${direction}, there is a ${cover} in about ${distance}`,
-                              (direction, distance, cover) => `There is a ${cover} about ${distance} ${direction} of here`,
-                              (direction, distance, cover) => `To the ${direction}, in about ${distance}, there is a ${cover}`];
+    const sentencePatterns = [(direction, distance, cover) => `To the ${direction}, there was a ${cover} in about ${distance}`,
+                              (direction, distance, cover) => `There was a ${cover} about ${distance} ${direction} of here`,
+                              (direction, distance, cover) => `To the ${direction}, in about ${distance}, there was a ${cover}`];
     // eslint-disable-next-line func-names
     sentencePatterns.sample = function () {
       return this[Math.floor(Math.random() * this.length)];
@@ -85,7 +85,7 @@ class Text {
   nativeLand(territories) {
     let territoryString = territories.slice(0, -1).join(', ');
     territoryString += ` and ${territories[territories.length - 1]}`;
-    this.body.innerHTML += `<p id='nativeland'> You are in the land of the ${territoryString}.</p>`;
+    this.body.innerHTML += `<p id='nativeland'>This is the land of the ${territoryString}.</p>`;
   }
 
   cardinalDirection(point) {
