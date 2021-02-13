@@ -1,12 +1,16 @@
+/* eslint-disable no-multi-str */
 /* eslint-disable no-restricted-syntax */
 class Text {
   constructor(body) {
     this.body = body;
+    this.body.innerHTML = '';
+    this.body.innerHTML += '<div id="content"></div>';
+    this.main = document.getElementById('content');
     this.compassQuadrants = ['east', 'northeast', 'north', 'northwest', 'west', 'southwest', 'south', 'southeast', 'east'];
   }
 
   currentCover(coverType) {
-    this.body.innerHTML = `<p id='location'>This was a <strong>${coverType.toLowerCase()}</strong>.</p>`;
+    this.main.innerHTML = `<p id='location'>This was a <strong>${coverType.toLowerCase()}</strong>.</p>`;
   }
 
   async nearbyCovers(nearCovers) {
@@ -16,7 +20,7 @@ class Text {
       coversByDirection.get(direction).push(cover);
     }
 
-    this.body.innerHTML += '<p>';
+    this.main.innerHTML += '<p>';
 
     // we repeat "east" at the beginning and end of compassQuadrants,
     // so we want to avoid the last "east"
@@ -34,9 +38,9 @@ class Text {
 
       covers.sort((a, b) => a.distance - b.distance);
       const sentence = Text.coverSentence(covers);
-      this.body.innerHTML += `${sentence}. `;
+      this.main.innerHTML += `${sentence}. `;
     }
-    this.body.innerHTML += '</p>';
+    this.main.innerHTML += '</p>';
   }
 
   static coverSentence(covers) {
@@ -82,10 +86,8 @@ class Text {
     return sentence;
   }
 
-  nativeLand(territories) {
-    let territoryString = territories.slice(0, -1).join(', ');
-    territoryString += ` and ${territories[territories.length - 1]}`;
-    this.body.innerHTML += `<p id='nativeland'>This is the land of the ${territoryString}.</p>`;
+  footer(source) {
+    this.body.innerHTML += `<p id="footer">${source}</p>`;
   }
 
   cardinalDirection(point) {
@@ -100,6 +102,20 @@ class Text {
   static humanFractions(distance) {
     const vulgarFractions = [undefined, '⅛', '¼', '½', '½', '½', '¾', '¾', undefined];
     return vulgarFractions[Math.round(distance / 0.125)];
+  }
+
+  introText() {
+    this.body.innerHTML = (
+      '<p>This site tells you something about what the land looked like 200 years ago at your current location (if that location is within the current states of Illinois and Michigan).</p>\
+       <p>In the 19th century, the United States Federal Government <a href="https://en.wikipedia.org/wiki/Public_Land_Survey_System">surveyed the territories and states they were colonizing</a>. \
+          These surveys included information about natural features like forests, swamps, and prairies. The detailed survey notes sometimes included notes about the tree types. Starting in the 1990s, \
+          some US states interpreted these surveys to produce digital maps of historic vegetation. This site uses those interpretations.</p>\
+       <p>These original surveys were both a product of the theft of native lands and a facilitator of further expropriation. This was not an \
+          empty and unpeopled wilderness, but the land of indigenous people. While this site highlights natural features, many "natural" features were the product of active management of the original inhabitants. To learn more \
+          about who\'s land this is, visit <a href="https://native-land.ca/">Native-Land.ca</a>.</p>\
+       <p>To use this site, you have to let your web browser share your location. We don\'t keep that information or track you in any way</p>\
+       <button id="geolocate">Continue</button>'
+    );
   }
 }
 

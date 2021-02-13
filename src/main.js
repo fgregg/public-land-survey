@@ -5,12 +5,15 @@ const stateConfigs = new Map(
   [['Illinois', {
     baseURL: 'https://thawing-ocean-28786.herokuapp.com/http://imperialis.inhs.illinois.edu/arcgis/rest/services/Land_Cover/Presettlement_Land_Cover_All/MapServer/0/query?',
     coverFieldName: 'MAP',
-    spatialReference: 3857
+    spatialReference: 3857,
+    source: 'Data from the Illinois Natural History Survey\'s "<a href="https://clearinghouse.isgs.illinois.edu/data/landcover/illinois-landcover-early-1800s">Illinois Landcover in the Early 1800s</a>".'
   }],
    ['Michigan', {
      baseURL: 'https://services1.arcgis.com/7w1SUsLNZbGKoz6h/arcgis/rest/services/Michigan_vegetation_c1800/FeatureServer/0/query?',
      coverFieldName: 'COVERTYPE',
-     spatialReference: 3857
+     spatialReference: 3857,
+     source: 'Data from the Michigan State University\'s "<a href="https://mnfi.anr.msu.edu/resources/vegetation-circa-1800">Vegetation circa 1800</a>".'
+
    }]
   ]
 );
@@ -60,9 +63,11 @@ async function historicLandCover(browserPosition) {
     localVegetation
   );
   await text.nearbyCovers(nearbyVegetation);
+  text.footer(stateConfig.source);
 }
 
 function getLocation() {
+  sessionStorage.setItem('agreed', true);
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(historicLandCover);
   } else {
@@ -70,4 +75,15 @@ function getLocation() {
   }
 }
 
-window.addEventListener('load', getLocation);
+function dispatch() {
+  const alreadyAgreed = sessionStorage.getItem('agreedd');
+  if (!alreadyAgreed) {
+    const text = new Text(document.getElementById('main'));
+    text.introText();
+    document.getElementById('geolocate').addEventListener('click', getLocation);
+  } else {
+    getLocation();
+  }
+}
+
+window.addEventListener('load', dispatch);
