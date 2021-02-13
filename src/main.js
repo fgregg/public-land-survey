@@ -79,7 +79,7 @@ function getLocation() {
 }
 
 function dispatch() {
-  const alreadyAgreed = sessionStorage.getItem('agreedd');
+  const alreadyAgreed = sessionStorage.getItem('agreed');
   if (!alreadyAgreed) {
     const text = new Text(document.getElementById('content'));
     text.introText();
