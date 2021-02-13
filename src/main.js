@@ -72,7 +72,14 @@ async function historicLandCover(browserPosition) {
 
 function getLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(historicLandCover);
+    navigator.geolocation.getCurrentPosition(
+      historicLandCover,
+      (error) => {
+        if (error.code === error.PERMISSION_DENIED) {
+          document.getElementById('content').innerHTML = '<p>We need your current location</p> <p>You may need grant your web browser permission to access your location in your system settings.</p>'  
+        }
+      }
+    );
   } else {
     document.getElementById('content').innerHTML = 'Geolocation is not supported by this browser.';
   }
