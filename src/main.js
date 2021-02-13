@@ -46,8 +46,8 @@ async function whatState(position) {
 async function historicLandCover(browserPosition) {
   const position = [browserPosition.coords.longitude, browserPosition.coords.latitude];
   const state = await whatState(position);
-  if (state) {
-    const stateConfig = stateConfigs.get(state);
+  const stateConfig = stateConfigs.get(state);
+  if (stateConfig) {
     const landCoverServer = new LandCoverServer(
       stateConfig.baseURL,
       stateConfig.coverFieldName,
