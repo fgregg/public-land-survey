@@ -69,8 +69,8 @@ async function historicLandCover(browserPosition) {
     document.getElementById('content').innerHTML = '<p>Sorry friends, we don\'t have data for your state.</p>';
   }
 }
+
 function getLocation() {
-  sessionStorage.setItem('agreed', true);
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(historicLandCover);
   } else {
@@ -78,15 +78,4 @@ function getLocation() {
   }
 }
 
-function dispatch() {
-  const alreadyAgreed = sessionStorage.getItem('agreed');
-  if (!alreadyAgreed) {
-    const text = new Text(document.getElementById('content'));
-    text.introText();
-    document.getElementById('geolocate').addEventListener('click', getLocation);
-  } else {
-    getLocation();
-  }
-}
-
-window.addEventListener('load', dispatch);
+window.getLocation = getLocation;
