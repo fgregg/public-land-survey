@@ -1,27 +1,43 @@
 <!DOCTYPE html>
+<html lang='en'>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
 <style>
-#content{
-   font-size: 3vmin;
-   position: absolute;
-   top: 40%;
-   left: 30%;
-   text-align: justify;
-   transform: translate(-21%, -50%);
-}
-#location{
-  font-size: 6vmin;
-}
-#footer {
-  position: fixed;
-  bottom: 0;
-  font-size: 3vmin;
-  left: 0;
-  width: 100%;
-  text-align: center;
-}
-</style>
-<html>
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+  body {
+    margin-bottom: 60px; /* Margin bottom by footer height */
+    font-family: 'serif';
+  }
+  #content {
+    max-width: 33em;
+    margin: 30px auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: 'serif';
+    font-size: 16px;
+  }
+  #location {
+    font-size: 21px;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Set the fixed height of the footer here */
+    line-height: 60px; /* Vertically center the text there */
+    text-align: center;
+    font-size: 13px;
+  }
+</style>  
+</head>
 <body id='main'>
+  <div id='content'></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 <script type="module" src="src/main.js"></script>
 </body>
 </html>

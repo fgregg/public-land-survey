@@ -46,39 +46,42 @@ async function whatState(position) {
 async function historicLandCover(browserPosition) {
   const position = [browserPosition.coords.longitude, browserPosition.coords.latitude];
   const state = await whatState(position);
-  const stateConfig = stateConfigs.get(state);
-  const landCoverServer = new LandCoverServer(
-    stateConfig.baseURL,
-    stateConfig.coverFieldName,
-    stateConfig.spatialReference
-  );
-  const text = new Text(document.getElementById('main'));
+  if (state) {
+    const stateConfig = stateConfigs.get(state);
+    const landCoverServer = new LandCoverServer(
+      stateConfig.baseURL,
+      stateConfig.coverFieldName,
+      stateConfig.spatialReference
+    );
+    const text = new Text(document.getElementById('content'));
 
-  const localVegetation = await landCoverServer.cover(position);
-  text.currentCover(localVegetation);
+    const localVegetation = await landCoverServer.cover(position);
+    text.currentCover(localVegetation);
 
-  const nearbyVegetation = landCoverServer.coversWithinBuffer(
-    position,
-    1.0,
-    localVegetation
-  );
-  await text.nearbyCovers(nearbyVegetation);
-  text.footer(stateConfig.source);
+    const nearbyVegetation = landCoverServer.coversWithinBuffer(
+      position,
+      1.0,
+      localVegetation
+    );
+    await text.nearbyCovers(nearbyVegetation);
+    text.footer(stateConfig.source);
+  } else {
+    document.getElementById('content').innerHTML = '<p>Sorry friends, we don\'t have data for your state.</p>';
+  }
 }
-
 function getLocation() {
   sessionStorage.setItem('agreed', true);
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(historicLandCover);
   } else {
-    document.getElementById('main').innerHTML = 'Geolocation is not supported by this browser.';
+    document.getElementById('content').innerHTML = 'Geolocation is not supported by this browser.';
   }
 }
 
 function dispatch() {
   const alreadyAgreed = sessionStorage.getItem('agreedd');
   if (!alreadyAgreed) {
-    const text = new Text(document.getElementById('main'));
+    const text = new Text(document.getElementById('content'));
     text.introText();
     document.getElementById('geolocate').addEventListener('click', getLocation);
   } else {
