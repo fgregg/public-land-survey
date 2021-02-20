@@ -4,16 +4,20 @@ class Text {
   constructor(main) {
     this.main = main;
     this.compassQuadrants = ['east', 'northeast', 'north', 'northwest', 'west', 'southwest', 'south', 'southeast', 'east'];
+    this.currentCoverType = undefined;
   }
 
   currentCover(coverType) {
+    this.currentCoverType = coverType.toLowerCase();
     this.main.innerHTML = `<p id='location'>This was a <strong>${coverType.toLowerCase()}</strong>.</p>`;
     this.copyEdit();
   }
 
   async nearbyCovers(nearCovers) {
     const coversByDirection = new Map(this.compassQuadrants.map((direction) => [direction, []]));
+    let anyNearby = false;
     for await (const cover of nearCovers) {
+      anyNearby = true;
       const direction = this.cardinalDirection(cover.closestPoint);
       coversByDirection.get(direction).push(cover);
     }
@@ -38,6 +42,11 @@ class Text {
       const sentence = Text.coverSentence(covers);
       this.main.innerHTML += `${sentence}. `;
     }
+
+    if (!anyNearby) {
+      this.main.innerHTML += `The ${this.currentCoverType} spread out for at least a mile in all directions.`;
+    }
+
     this.main.innerHTML += '</p>';
     this.copyEdit();
   }
@@ -73,11 +82,15 @@ class Text {
       } else if (idx < (covers.length - 1)) {
         if (distance > 0.9375) {
           sentence += `, a ${cover.coverType.toLowerCase()} in about a mile`;
+        } else if (distance < 0.0625) {
+          sentence += `, a ${cover.coverType.toLowerCase()} very close by`;
         } else {
           sentence += `, a ${cover.coverType.toLowerCase()} in about ${Text.humanFractions(distance)} of a mile`;
         }
       } else if (distance > 0.9375) {
         sentence += ` and a ${cover.coverType.toLowerCase()} in about a mile`;
+      } else if (distance < 0.0625) {
+        sentence += ` and a ${cover.coverType.toLowerCase()} very close by`;
       } else {
         sentence += ` and a ${cover.coverType.toLowerCase()} in about ${Text.humanFractions(distance)} of a mile`;
       }
@@ -101,13 +114,14 @@ class Text {
   }
 
   static humanFractions(distance) {
+    console.log(distance)
     const vulgarFractions = [undefined, '⅛', '¼', '½', '½', '½', '¾', '¾', undefined];
     return vulgarFractions[Math.round(distance / 0.125)];
   }
 
   copyEdit() {
     this.main.innerHTML = this.main.innerHTML.replace(/ a (?=(<.*?>)?[aeiou])/g, ' an ');
-    this.main.innerHTML = this.main.innerHTML.replace(/ a (?=water)/g, ' ');
+    this.main.innerHTML = this.main.innerHTML.replace(/ a (?=(<.*?>)?water)/g, ' ');
   }
 }
 
