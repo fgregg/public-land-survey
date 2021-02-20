@@ -8,6 +8,7 @@ class Text {
 
   currentCover(coverType) {
     this.main.innerHTML = `<p id='location'>This was a <strong>${coverType.toLowerCase()}</strong>.</p>`;
+    this.copyEdit();
   }
 
   async nearbyCovers(nearCovers) {
@@ -38,6 +39,7 @@ class Text {
       this.main.innerHTML += `${sentence}. `;
     }
     this.main.innerHTML += '</p>';
+    this.copyEdit();
   }
 
   static coverSentence(covers) {
@@ -55,7 +57,7 @@ class Text {
       let humanDistance;
       if (idx === 0) {
         if (distance < 0.0625) {
-          sentence = `There is a ${cover.coverType.toLowerCase()} just to the ${cover.direction}`;
+          sentence = `There was a ${cover.coverType.toLowerCase()} just to the ${cover.direction}`;
         } else {
           if (distance > 0.9375) {
             humanDistance = 'a mile';
@@ -101,6 +103,10 @@ class Text {
   static humanFractions(distance) {
     const vulgarFractions = [undefined, '⅛', '¼', '½', '½', '½', '¾', '¾', undefined];
     return vulgarFractions[Math.round(distance / 0.125)];
+  }
+
+  copyEdit() {
+    this.main.innerHTML = this.main.innerHTML.replace(/ a (?=(<.*?>)?[aeiou])/, ' an ');
   }
 }
 

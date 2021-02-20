@@ -1,14 +1,16 @@
-import LandCoverServer from './LandCover.js';
+import { LandCoverServer, IllinoisLandCoverServer } from './LandCover.js';
 import Text from './Text.js';
 
 const stateConfigs = new Map(
   [['Illinois', {
+    Class: IllinoisLandCoverServer,
     baseURL: 'https://thawing-ocean-28786.herokuapp.com/http://imperialis.inhs.illinois.edu/arcgis/rest/services/Land_Cover/Presettlement_Land_Cover_All/MapServer/0/query?',
-    coverFieldName: 'MAP',
+    coverFieldName: 'LAND_CODE',
     spatialReference: 3857,
     source: 'Data from the Illinois Natural History Survey\'s "<a href="https://clearinghouse.isgs.illinois.edu/data/landcover/illinois-landcover-early-1800s">Illinois Landcover in the Early 1800s</a>".'
   }],
    ['Michigan', {
+     Class: LandCoverServer,
      baseURL: 'https://services1.arcgis.com/7w1SUsLNZbGKoz6h/arcgis/rest/services/Michigan_vegetation_c1800/FeatureServer/0/query?',
      coverFieldName: 'COVERTYPE',
      spatialReference: 3857,
@@ -48,7 +50,7 @@ async function historicLandCover(browserPosition) {
   const state = await whatState(position);
   const stateConfig = stateConfigs.get(state);
   if (stateConfig) {
-    const landCoverServer = new LandCoverServer(
+    const landCoverServer = new stateConfig.Class(
       stateConfig.baseURL,
       stateConfig.coverFieldName,
       stateConfig.spatialReference
@@ -60,8 +62,7 @@ async function historicLandCover(browserPosition) {
 
     const nearbyVegetation = landCoverServer.coversWithinBuffer(
       position,
-      1.0,
-      localVegetation
+      1.0
     );
     await text.nearbyCovers(nearbyVegetation);
     text.footer(stateConfig.source);
@@ -76,7 +77,7 @@ function getLocation() {
       historicLandCover,
       (error) => {
         if (error.code === error.PERMISSION_DENIED) {
-          document.getElementById('content').innerHTML = '<p>We need your current location</p> <p>You may need grant your web browser permission to access your location in your system settings.</p>'  
+          document.getElementById('content').innerHTML = '<p>We need your current location</p> <p>You may need grant your web browser permission to access your location in your system settings.</p>';
         }
       }
     );
