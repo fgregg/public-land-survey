@@ -106,7 +106,8 @@ class Text {
   }
 
   copyEdit() {
-    this.main.innerHTML = this.main.innerHTML.replace(/ a (?=(<.*?>)?[aeiou])/, ' an ');
+    this.main.innerHTML = this.main.innerHTML.replace(/ a (?=(<.*?>)?[aeiou])/g, ' an ');
+    this.main.innerHTML = this.main.innerHTML.replace(/ a (?=water)/g, ' ');
   }
 }
 
