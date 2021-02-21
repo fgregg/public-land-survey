@@ -17,6 +17,7 @@ export class LandCoverServer {
       geometry: position,
       geometryType: 'esriGeometryPoint',
       inSR: 4326,
+      outSR: this.spatialReference,
       spatialRel: 'esriSpatialRelIntersects',
       f: 'pjson',
       returnGeometry: false,
@@ -36,6 +37,7 @@ export class LandCoverServer {
       geometry: position,
       geometryType: 'esriGeometryPoint',
       inSR: 4326,
+      outSR: this.spatialReference,
       spatialRel: 'esriSpatialRelIntersects',
       f: 'pjson',
       distance: buffer,
@@ -60,7 +62,7 @@ export class LandCoverServer {
   }
 
   coverType(feature) {
-    return feature.attributes[this.coverFieldName];
+    return feature.attributes[this.coverFieldName].toLowerCase();
   }
 
   async project(position) {
@@ -130,7 +132,53 @@ export class IllinoisLandCoverServer extends LandCoverServer {
         ['ti', 'forest']
       ]
     );
-    const landCode = feature.attributes[this.coverFieldName];
+    const landCode = feature.attributes[this.coverFieldName].toLowerCase();
     return landLabels.get(landCode);
+  }
+}
+
+
+export class WisconsinLandCoverServer extends LandCoverServer {
+  constructor(baseURL, coverFieldName, spatialReference) {
+    super(baseURL, coverFieldName, spatialReference);
+    this.waterFieldName = 'LUC_LEVEL_2_CODE';
+    this.outFields = [this.coverFieldName, this.waterFieldName];
+  }
+
+  coverType(feature) {
+    const landLabels = {
+      1: "place home to white spruce, balsam fir, tamarack, white cedar, white birch, and aspen",
+      2: "place home to beech, hemlock, sugar maple, yellow birch, white pine, and red pine",
+      3: "place home to hemlock, sugar maple, yellow birch, white pine, and red pine",
+      4: "place home to sugar maple, yellow birch, white pine, and red pine",
+      5: "place home to white pine and red pine",
+      6: "oak forest and barrens, including jack pine and Hill's scrub oak",
+      7: "place home to aspen, white birch, and pine",
+      8: "place home to beech, sugar maple, basswood, red oak, white oak, and black oak",
+      9: "place home to sugar maple, basswood, red oak, white oak, and black oak",
+      10: "place home to white oak, black oak, and bur oak",
+      11: "oak opening, including bur oak, white oak, and black oak",
+      12: "prairie",
+      13: "brushland",
+      14: "swamp with conifers, including white cedar, black spruce, tamarack, and hemlock",
+      15: "lowland with hardwoods, including willow, soft maple, box elder, ash, elm, cottonwood, and river birch",
+      16: "marsh and sedge meadow, wet prairie, and lowland shrubs",
+      99: "place with unknown vegetation cover",
+      0: "body of water", // should fall through to those below
+    }
+    const waterLabels = {
+      // Adapted from https://www.arcgis.com/home/item.html?id=b172c55a0ebb43a19886a4eb57bc5292
+      51: "stream or canal",
+      52: "lake",
+      53: "reservoir",
+    }
+    const landCode = feature.attributes[this.coverFieldName];
+    let label;
+    if (landCode === 0) {
+      label = waterLabels[feature.attributes[this.waterFieldName]];
+    } else {
+      label = landLabels[landCode]
+    }
+    return label;
   }
 }
