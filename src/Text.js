@@ -114,7 +114,6 @@ class Text {
   }
 
   static humanFractions(distance) {
-    console.log(distance)
     const vulgarFractions = [undefined, '⅛', '¼', '½', '½', '½', '¾', '¾', undefined];
     return vulgarFractions[Math.round(distance / 0.125)];
   }
