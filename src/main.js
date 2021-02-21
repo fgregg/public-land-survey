@@ -1,4 +1,4 @@
-import { LandCoverServer, IllinoisLandCoverServer } from './LandCover.js';
+import { LandCoverServer, IllinoisLandCoverServer, WisconsinLandCoverServer } from './LandCover.js';
 import Text from './Text.js';
 
 const stateConfigs = new Map(
@@ -16,7 +16,14 @@ const stateConfigs = new Map(
      spatialReference: 3857,
      source: 'Data from the Michigan State University\'s "<a href="https://mnfi.anr.msu.edu/resources/vegetation-circa-1800">Vegetation circa 1800</a>".'
 
-   }]
+    }],
+    ['Wisconsin', {
+      Class: WisconsinLandCoverServer,
+      baseURL: 'https://dnrmaps.wi.gov/arcgis/rest/services/DW_Map_Dynamic/EN_Forest_Land_Cover_WTM_Ext/MapServer/1/query?',
+      coverFieldName: 'VEG_TYPE_CODE',
+      spatialReference: 3857,
+      source: 'Data from the Wisconsin Department of Natural Resources\'s "<a href="https://data-wi-dnr.opendata.arcgis.com/datasets/3e952715b0d549c39cd8e26b4b274a0c_1?geometry=-108.180%2C42.004%2C-71.266%2C47.461">Original Vegetation Polygons</a>".'
+    }]
   ]
 );
 

@@ -8,8 +8,8 @@ class Text {
   }
 
   currentCover(coverType) {
-    this.currentCoverType = coverType.toLowerCase();
-    this.main.innerHTML = `<p id='location'>This was a <strong>${coverType.toLowerCase()}</strong>.</p>`;
+    this.currentCoverType = coverType;
+    this.main.innerHTML = `<p id='location'>This was a <strong>${coverType}</strong>.</p>`;
     this.copyEdit();
   }
 
@@ -66,7 +66,7 @@ class Text {
       let humanDistance;
       if (idx === 0) {
         if (distance < 0.0625) {
-          sentence = `There was a ${cover.coverType.toLowerCase()} just to the ${cover.direction}`;
+          sentence = `There was a ${cover.coverType} just to the ${cover.direction}`;
         } else {
           if (distance > 0.9375) {
             humanDistance = 'a mile';
@@ -76,23 +76,23 @@ class Text {
           sentence = sentencePatterns.sample()(
             cover.direction,
             humanDistance,
-            cover.coverType.toLowerCase()
+            cover.coverType
           );
         }
       } else if (idx < (covers.length - 1)) {
         if (distance > 0.9375) {
-          sentence += `, a ${cover.coverType.toLowerCase()} in about a mile`;
+          sentence += `, a ${cover.coverType} in about a mile`;
         } else if (distance < 0.0625) {
-          sentence += `, a ${cover.coverType.toLowerCase()} very close by`;
+          sentence += `, a ${cover.coverType} very close by`;
         } else {
-          sentence += `, a ${cover.coverType.toLowerCase()} in about ${Text.humanFractions(distance)} of a mile`;
+          sentence += `, a ${cover.coverType} in about ${Text.humanFractions(distance)} of a mile`;
         }
       } else if (distance > 0.9375) {
-        sentence += ` and a ${cover.coverType.toLowerCase()} in about a mile`;
+        sentence += ` and a ${cover.coverType} in about a mile`;
       } else if (distance < 0.0625) {
-        sentence += ` and a ${cover.coverType.toLowerCase()} very close by`;
+        sentence += ` and a ${cover.coverType} very close by`;
       } else {
-        sentence += ` and a ${cover.coverType.toLowerCase()} in about ${Text.humanFractions(distance)} of a mile`;
+        sentence += ` and a ${cover.coverType} in about ${Text.humanFractions(distance)} of a mile`;
       }
     }
     return sentence;
