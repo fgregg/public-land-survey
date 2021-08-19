@@ -33,7 +33,7 @@ async function whatState(position) {
   // storage and save the network call
   let state = sessionStorage.getItem('state');
   if (state === null) {
-    const baseURL = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer/84/query?';
+    const baseURL = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer/80/query?';
     const params = new URLSearchParams({
       geometry: position,
       geometryType: 'esriGeometryPoint',
