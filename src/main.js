@@ -4,7 +4,7 @@ import Text from './Text.js';
 const stateConfigs = new Map(
   [['Illinois', {
     Class: IllinoisLandCoverServer,
-    baseURL: 'https://thawing-ocean-28786.herokuapp.com/http://imperialis.inhs.illinois.edu/arcgis/rest/services/Land_Cover/Presettlement_Land_Cover_All/MapServer/0/query?',
+    baseURL: 'https://corsproxy.bunkum.us/corsproxy/?apiurl=http://imperialis.inhs.illinois.edu/arcgis/rest/services/Land_Cover/Presettlement_Land_Cover_All/MapServer/0/query?',
     coverFieldName: 'LAND_CODE',
     spatialReference: 3857,
     source: 'Data from the Illinois Natural History Survey\'s "<a href="https://clearinghouse.isgs.illinois.edu/data/landcover/illinois-landcover-early-1800s">Illinois Landcover in the Early 1800s</a>".'
