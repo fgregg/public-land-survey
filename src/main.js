@@ -4,17 +4,19 @@ import Text from './Text.js';
 const stateConfigs = new Map(
   [['Illinois', {
     Class: IllinoisLandCoverServer,
-    baseURL: 'https://corsproxy.bunkum.us/corsproxy/?apiurl=http://imperialis.inhs.illinois.edu/arcgis/rest/services/Land_Cover/Presettlement_Land_Cover_All/MapServer/0/query?',
+    baseURL: 'https://corsproxy.bunkum.us/corsproxy/?apiurl=https://geodata.dnr.illinois.gov/arcgis/rest/services/Arch_Base_ILGIS/FeatureServer/2/query?',
     coverFieldName: 'LAND_CODE',
     spatialReference: 3857,
-    source: 'Data from the Illinois Natural History Survey\'s "<a href="https://clearinghouse.isgs.illinois.edu/data/landcover/illinois-landcover-early-1800s">Illinois Landcover in the Early 1800s</a>".'
+    source: 'Data from the Illinois Natural History Survey\'s "<a href="https://clearinghouse.isgs.illinois.edu/data/landcover/illinois-landcover-early-1800s">Illinois Landcover in the Early 1800s</a>".',
+    proxied: true
   }],
    ['Michigan', {
      Class: LandCoverServer,
      baseURL: 'https://services1.arcgis.com/7w1SUsLNZbGKoz6h/arcgis/rest/services/Michigan_vegetation_c1800_RxFireModel/FeatureServer/0/query?',
      coverFieldName: 'COVERTYPE',
      spatialReference: 3857,
-     source: 'Data from the Michigan State University\'s "<a href="https://mnfi.anr.msu.edu/resources/vegetation-circa-1800">Vegetation circa 1800</a>".'
+     source: 'Data from the Michigan State University\'s "<a href="https://mnfi.anr.msu.edu/resources/vegetation-circa-1800">Vegetation circa 1800</a>".',
+     proxied: false
 
     }],
     ['Wisconsin', {
@@ -22,7 +24,8 @@ const stateConfigs = new Map(
       baseURL: 'https://dnrmaps.wi.gov/arcgis/rest/services/DW_Map_Dynamic/EN_Forest_Land_Cover_WTM_Ext/MapServer/1/query?',
       coverFieldName: 'VEG_TYPE_CODE',
       spatialReference: 3857,
-      source: 'Data from the Wisconsin Department of Natural Resources\'s "<a href="https://data-wi-dnr.opendata.arcgis.com/datasets/3e952715b0d549c39cd8e26b4b274a0c_1?geometry=-108.180%2C42.004%2C-71.266%2C47.461">Original Vegetation Polygons</a>".'
+      source: 'Data from the Wisconsin Department of Natural Resources\'s "<a href="https://data-wi-dnr.opendata.arcgis.com/datasets/3e952715b0d549c39cd8e26b4b274a0c_1?geometry=-108.180%2C42.004%2C-71.266%2C47.461">Original Vegetation Polygons</a>".',
+      proxied: true
     }]
   ]
 );
@@ -60,7 +63,8 @@ async function historicLandCover(browserPosition) {
     const landCoverServer = new stateConfig.Class(
       stateConfig.baseURL,
       stateConfig.coverFieldName,
-      stateConfig.spatialReference
+      stateConfig.spatialReference,
+      stateConfig.proxied
     );
     const text = new Text(document.getElementById('content'));
 

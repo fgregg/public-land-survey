@@ -4,10 +4,11 @@ import Cover from './Cover.js';
 import Point from './Point.js';
 
 export class LandCoverServer {
-  constructor(baseURL, coverFieldName, spatialReference) {
+  constructor(baseURL, coverFieldName, spatialReference, proxied) {
     this.baseURL = baseURL;
     this.coverFieldName = coverFieldName;
     this.spatialReference = spatialReference;
+    this.proxied = proxied,
     this.outFields = [this.coverFieldName];
     this.currentCoverCode = undefined;
   }
@@ -23,7 +24,12 @@ export class LandCoverServer {
       returnGeometry: false,
       outFields: this.outFields
     });
-    const url = this.baseURL + params.toString();
+    let url
+    if (this.proxied) {
+      url = this.baseURL + encodeURIComponent(params.toString());
+    } else {
+      url = this.baseURL + params.toString();
+    }
     const response = await fetch(url);
     const json = await response.json();
 
@@ -45,7 +51,12 @@ export class LandCoverServer {
       where: `${this.coverFieldName} <> '${this.currentCoverCode}'`,
       outFields: this.outFields
     });
-    const url = this.baseURL + params.toString();
+    let url
+    if (this.proxied) {
+      url = this.baseURL + encodeURIComponent(params.toString());
+    } else {
+      url = this.baseURL + params.toString();
+    }
     const response = await fetch(url);
     const json = await response.json();
 
