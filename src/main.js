@@ -11,7 +11,7 @@ const stateConfigs = new Map(
   }],
    ['Michigan', {
      Class: LandCoverServer,
-     baseURL: 'https://services1.arcgis.com/7w1SUsLNZbGKoz6h/arcgis/rest/services/Michigan_vegetation_c1800/FeatureServer/0/query?',
+     baseURL: 'https://services1.arcgis.com/7w1SUsLNZbGKoz6h/arcgis/rest/services/Michigan_vegetation_c1800_RxFireModel/FeatureServer/0/query?',
      coverFieldName: 'COVERTYPE',
      spatialReference: 3857,
      source: 'Data from the Michigan State University\'s "<a href="https://mnfi.anr.msu.edu/resources/vegetation-circa-1800">Vegetation circa 1800</a>".'
